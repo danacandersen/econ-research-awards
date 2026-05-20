@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Awards &amp; Funding — UAlberta Economics</title>
+<style>
+  :root {
+    --green:  #007C41;
+    --gold:   #FFDB00;
+    --navy:   #003366;
+    --light:  #f5f7f5;
+    --border: #d4e0d4;
+    --text:   #222;
+    --muted:  #666;
+    --award-bg:   #eaf2ff;
+    --grant-bg:   #eafaf0;
+    --fellow-bg:  #f5eaff;
+    --high-bg:    #fff3cd;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; color: var(--text);
+         background: var(--light); line-height: 1.5; font-size: 15px; }
+
+  /* Header */
+  header { background: var(--green); color: white; padding: 1.5rem 2rem; }
+  header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: .25rem; }
+  header p  { opacity: .85; font-size: .9rem; }
+  header a  { color: var(--gold); }
+
+  /* Intro */
+  .intro { background: white; border-bottom: 1px solid var(--border);
+           padding: 1rem 2rem; font-size: .9rem; color: var(--muted); }
+  .intro a { color: var(--green); }
+
+  /* Filters */
+  .filters { background: white; border-bottom: 2px solid var(--border);
+             padding: .75rem 2rem; display: flex; flex-wrap: wrap;
+             gap: .75rem; align-items: center; }
+  .filter-group { display: flex; gap: .35rem; }
+  .filter-btn {
+    padding: .35rem .85rem; border-radius: 20px; border: 1.5px solid var(--border);
+    background: white; cursor: pointer; font-size: .85rem; font-weight: 500;
+    transition: all .15s;
+  }
+  .filter-btn:hover { border-color: var(--green); color: var(--green); }
+  .filter-btn.active { background: var(--green); color: white; border-color: var(--green); }
+  .filter-toggle { font-size: .85rem; display: flex; align-items: center; gap: .35rem;
+                   cursor: pointer; color: var(--muted); }
+  .filter-toggle input { cursor: pointer; }
+  .filter-sep { color: var(--border); }
+
+  /* Grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+          gap: 1rem; padding: 1.25rem 2rem; }
+
+  /* Card */
+  .card { background: white; border-radius: 8px; border: 1px solid var(--border);
+          padding: 1.1rem 1.25rem; display: flex; flex-direction: column; gap: .5rem;
+          transition: box-shadow .15s; }
+  .card:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .card.type-award   { border-left: 4px solid #3b82f6; }
+  .card.type-grant   { border-left: 4px solid var(--green); }
+  .card.type-fellowship { border-left: 4px solid #8b5cf6; }
+
+  .card-top { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+  .badge {
+    display: inline-block; font-size: .7rem; font-weight: 700; padding: .15rem .55rem;
+    border-radius: 12px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .badge-award  { background: #dbeafe; color: #1d4ed8; }
+  .badge-grant  { background: #dcfce7; color: #15803d; }
+  .badge-fellow { background: #ede9fe; color: #6d28d9; }
+  .badge-high   { background: #fff3cd; color: #92400e; }
+  .badge-med    { background: #fef9c3; color: #854d0e; }
+  .badge-ec      { background: #fce7f3; color: #9d174d; }
+  .badge-letters { background: #fff3e0; color: #c2410c; }
+
+  .card h3 { font-size: .95rem; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .card .sponsor { font-size: .8rem; color: var(--muted); }
+
+  .deadline { font-size: .82rem; font-weight: 600; }
+  .deadline.urgent  { color: #dc2626; }
+  .deadline.soon    { color: #d97706; }
+  .deadline.normal  { color: var(--green); }
+  .deadline.tbc     { color: var(--muted); }
+
+  .amount { font-size: .82rem; color: var(--muted); }
+  .desc   { font-size: .83rem; color: #444; line-height: 1.45; }
+  .elig   { font-size: .78rem; color: var(--muted); font-style: italic; }
+
+  .card-actions { display: flex; gap: .5rem; margin-top: .35rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: .35rem .85rem; border-radius: 5px; font-size: .8rem;
+    font-weight: 600; text-decoration: none; transition: background .15s;
+  }
+  .btn-primary { background: var(--green); color: white; }
+  .btn-primary:hover { background: #005c30; }
+  .btn-secondary { background: white; color: var(--green); border: 1.5px solid var(--green); }
+  .btn-secondary:hover { background: var(--light); }
+
+  /* Empty state */
+  .empty { padding: 2.5rem 2rem; text-align: center; color: var(--muted); grid-column: 1/-1; }
+
+  /* Footer */
+  footer { text-align: center; padding: 1.5rem; font-size: .8rem; color: var(--muted);
+           border-top: 1px solid var(--border); background: white; margin-top: 1rem; }
+
+  /* Profile panel */
+  .profile-panel {
+    background: #f0f7f0; border-bottom: 2px solid var(--border);
+    padding: .6rem 2rem; display: flex; flex-wrap: wrap;
+    gap: .65rem; align-items: center; font-size: .85rem;
+  }
+  .profile-label { font-weight: 600; color: var(--green); white-space: nowrap; }
+  .rank-group { display: flex; gap: .3rem; }
+  .rank-btn {
+    padding: .25rem .7rem; border-radius: 20px; border: 1.5px solid var(--border);
+    background: white; cursor: pointer; font-size: .8rem; font-weight: 500;
+    transition: all .15s;
+  }
+  .rank-btn:hover  { border-color: var(--green); color: var(--green); }
+  .rank-btn.active { background: var(--green); color: white; border-color: var(--green); }
+  .profile-check { display: flex; align-items: center; gap: .3rem; cursor: pointer; color: var(--text); }
+  .profile-check input { cursor: pointer; }
+
+  /* Eligibility dimming */
+  .card.ineligible { opacity: 0.32; transition: opacity .2s; }
+  .card.ineligible:hover { opacity: 0.62; }
+  .inelig-note { display: none; font-size: .73rem; color: #dc2626; }
+  .card.ineligible .inelig-note { display: block; }
+
+  @media (max-width: 600px) {
+    header, .intro, .filters, .profile-panel, .grid { padding-left: 1rem; padding-right: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Research Awards &amp; Funding</h1>
+  <p>Department of Economics &nbsp;·&nbsp; University of Alberta &nbsp;·&nbsp;
+     Contact: <a href="mailto:dca@ualberta.ca">Dana Andersen</a>, Research Awards Committee</p>
+</header>
+
+<div class="intro">
+  The Research Awards Committee tracks awards, fellowships, and grant opportunities for Economics faculty.
+  For <strong>awards and fellowships</strong> that require a department nomination, contact Dana — we can help coordinate.
+  For <strong>grants</strong>, faculty apply directly; deadlines are listed here to help you plan.
+  &nbsp;·&nbsp; Know of an award not listed?
+  <a href="mailto:dca@ualberta.ca?subject=Award suggestion">Email Dana.</a>
+  &nbsp;·&nbsp; Last updated: <span id="last-updated">2026-05-20</span>
+</div>
+
+<div class="filters">
+  <div class="filter-group" id="type-filters">
+    <button class="filter-btn active" data-type="all">All</button>
+    <button class="filter-btn" data-type="award">Awards &amp; Fellowships</button>
+    <button class="filter-btn" data-type="grant">Grants</button>
+  </div>
+  <span class="filter-sep">|</span>
+  <label class="filter-toggle">
+    <input type="checkbox" id="high-only"> Dept nomination required
+  </label>
+  <label class="filter-toggle">
+    <input type="checkbox" id="upcoming-only"> Upcoming deadlines only
+  </label>
+</div>
+
+<div class="profile-panel" id="profile-panel">
+  <span class="profile-label">Your profile:</span>
+  <div class="rank-group" id="rank-group">
+    <button class="rank-btn active" data-rank="any">Any rank</button>
+    <button class="rank-btn" data-rank="assistant_professor">Assistant</button>
+    <button class="rank-btn" data-rank="associate_professor">Associate</button>
+    <button class="rank-btn" data-rank="full_professor">Full</button>
+  </div>
+  <span class="filter-sep">|</span>
+  <label class="profile-check"><input type="checkbox" id="p-canadian"> Canadian citizen / PR</label>
+  <label class="profile-check"><input type="checkbox" id="p-early"> Early career (≤6 yrs TT)</label>
+  <label class="profile-check"><input type="checkbox" id="p-sshrc"> Has SSHRC funding</label>
+  <label class="profile-check"><input type="checkbox" id="p-no-letters"> No external letters</label>
+</div>
+
+<div class="grid" id="awards-grid"></div>
+
+<footer>
+  Maintained by the Research Awards Committee.
+  Data last updated: <span id="last-updated-footer">—</span>.
+  To suggest an award: <a href="mailto:dca@ualberta.ca?subject=Award suggestion" style="color:var(--green)">dca@ualberta.ca</a>
+</footer>
+
+<script>
+/* BEGIN AWARDS_DATA */
+const AWARDS_DATA = [
+  {
+    "id": "kaplan-award",
+    "name": "J. Gordin Kaplan Award for Excellence in Research",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/awards-honours/index.html",
+    "type": "award",
+    "nomination_type": "dept",
+    "dana_involvement": "high",
+    "description": "Recognizes exceptional research contributions by a UAlberta faculty member. Department nominates candidate and coordinates submission through Leslie Parsad. Requires 1 arms-length external reference letter (co-authors permitted); sent directly to Parsad by the referee.",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": 9,
+    "deadline_note": "Annual; preliminary ~August, final ~September. Submit to Leslie Parsad (parsad@ualberta.ca).",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Any full-time faculty member"
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "research-excellence"
+    ],
+    "contacts": {
+      "internal_contact": "Leslie Parsad",
+      "email": "parsad@ualberta.ca"
+    },
+    "history": [
+      {
+        "year": 2025,
+        "nominee": "David Brown",
+        "outcome": "not_selected",
+        "notes": "Submitted Sept 2025. Result Dec 9, 2025 \u2014 not selected. Committee noted strong candidate pool."
+      }
+    ],
+    "added_date": "2026-05-15",
+    "source": "google-sheet + email-scan",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 1,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "September 2026",
+    "_days_until": 104
+  },
+  {
+    "id": "martha-cook-piper-prize",
+    "name": "Martha Cook Piper Research Prize",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/awards-honours/index.html",
+    "type": "award",
+    "nomination_type": "dept",
+    "dana_involvement": "high",
+    "description": "Annual prize recognizing outstanding research by a UAlberta faculty member. Requires 2 external reference letters; referees send directly to Leslie Parsad.",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": null,
+    "deadline_note": "Annual; deadline TBC \u2014 check with Leslie Parsad (parsad@ualberta.ca).",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Any faculty member"
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "research-excellence"
+    ],
+    "contacts": {
+      "internal_contact": "Leslie Parsad",
+      "email": "parsad@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "google-sheet",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 2,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": null,
+    "_days_until": null
+  },
+  {
+    "id": "mccalla-professorships",
+    "name": "McCalla Professorships",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/provost/funding/awards/faculty-excellence-awards/mccalla-professorships/index.html",
+    "type": "award",
+    "nomination_type": "self",
+    "dana_involvement": "medium",
+    "description": "Competitive award providing a salary supplement and research funds to outstanding researchers. Faculty apply directly through the Provost's Office. Must be Associate Professor or equivalent. Can only be awarded once per career. Applicant provides 3 reference contacts; Provost's Office contacts them directly.",
+    "amount": "Salary supplement + research funds",
+    "recurrence": "annual",
+    "deadline_month": null,
+    "deadline_note": "Annual; deadline TBC \u2014 check UAlberta Provost's Office website.",
+    "eligibility": {
+      "career_stage": [
+        "associate",
+        "full"
+      ],
+      "notes": "Associate Professor or above. Can only be awarded once per career."
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "research-excellence"
+    ],
+    "contacts": {
+      "internal_contact": "Provost's Office",
+      "email": null
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "google-sheet",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 3,
+    "requires_canadian_citizenship": false,
+    "min_rank": "associate",
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": null,
+    "_days_until": null
+  },
+  {
+    "id": "killam-accelerator",
+    "name": "Killam Accelerator Research Award",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/awards-honours/index.html",
+    "type": "award",
+    "nomination_type": "dept",
+    "dana_involvement": "high",
+    "description": "Award supporting early-career faculty within 6 years of their first tenure-track appointment ($225K over 3 years). Note: eligibility is based on TT appointment date, not PhD date \u2014 one of the few UAlberta awards that works this way. Department nominates.",
+    "amount": "$225,000 over 3 years",
+    "recurrence": "annual",
+    "deadline_month": 12,
+    "deadline_note": "Annual; deadline December 4, 2026. Check with Leslie Parsad (parsad@ualberta.ca).",
+    "eligibility": {
+      "career_stage": [
+        "assistant",
+        "associate"
+      ],
+      "years_since_first_tt": 6,
+      "notes": "Within 6 years of first tenure-track appointment"
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "early-career"
+    ],
+    "contacts": {
+      "internal_contact": "Leslie Parsad",
+      "email": "parsad@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "google-sheet",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 2,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": 6,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "December 2026",
+    "_days_until": 195
+  },
+  {
+    "id": "dorothy-killam-fellowship",
+    "name": "Dorothy Killam Fellowship",
+    "sponsor": "Canada Council for the Arts",
+    "url": "https://canadacouncil.ca/funding/grants/dorothy-killam-fellowships",
+    "type": "fellowship",
+    "nomination_type": "dept",
+    "dana_involvement": "high",
+    "description": "Prestigious national fellowship for senior scholars. $80,000/year for up to 2 years of dedicated research time. Department nominates. Typically for researchers with \u226415 years post-PhD; open to faculty at Canadian universities regardless of citizenship. Requires external reference letters.",
+    "amount": "$80,000/year for up to 2 years",
+    "recurrence": "annual",
+    "deadline_month": null,
+    "deadline_note": "Annual; deadline TBC. Coordinate through Leslie Parsad.",
+    "eligibility": {
+      "career_stage": [
+        "associate",
+        "full"
+      ],
+      "notes": "Associate Professor or above. Typically \u226415 years post-PhD. Open to all faculty at Canadian universities."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "fellowship",
+      "prestige"
+    ],
+    "contacts": {
+      "internal_contact": "Leslie Parsad",
+      "email": "parsad@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "google-sheet",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 3,
+    "requires_canadian_citizenship": false,
+    "min_rank": "associate",
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": null,
+    "_days_until": null
+  },
+  {
+    "id": "rsc-fellow",
+    "name": "Fellow of the Royal Society of Canada (FRSC)",
+    "sponsor": "Royal Society of Canada",
+    "url": "https://rsc-src.ca/en/fellows/nominations",
+    "type": "award",
+    "nomination_type": "dept",
+    "dana_involvement": "high",
+    "description": "Canada's highest academic honour. Fellowship in the RSC Academy of Social Sciences. Department coordinates the nomination and internal submission through Leslie Parsad. Requires 3 external reference letters from established scholars. Standard path requires Canadian citizenship or PR (\u22653 years).",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": 9,
+    "deadline_note": "Annual; submission ~September; RSC announces fellows ~spring of following year.",
+    "eligibility": {
+      "career_stage": [
+        "associate",
+        "full"
+      ],
+      "notes": "Typically established researchers with sustained national/international contribution. Canadian citizen or PR (\u22653 years) required for standard election path."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "prestige",
+      "rsc"
+    ],
+    "contacts": {
+      "internal_contact": "Leslie Parsad",
+      "email": "parsad@ualberta.ca"
+    },
+    "history": [
+      {
+        "year": 2025,
+        "nominee": "David Brown",
+        "outcome": "outcome_unknown",
+        "notes": "Submitted Sept 2025. External letter (Adonis Yatchew) submitted Sept 22. Decision expected Nov/Dec 2025 \u2014 no notification received. Follow up."
+      }
+    ],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 3,
+    "requires_canadian_citizenship": true,
+    "min_rank": "associate",
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "September 2026",
+    "_days_until": 104
+  },
+  {
+    "id": "sshrc-impact-award",
+    "name": "SSHRC Impact Awards",
+    "sponsor": "SSHRC",
+    "url": "https://www.sshrc-crsh.gc.ca/about-au_sujet/policies-politiques/statements-enonces/impact_award-prix_impact-eng.aspx",
+    "type": "award",
+    "nomination_type": "ovpr",
+    "dana_involvement": "high",
+    "description": "National awards recognizing outstanding SSHRC-funded research (Gold Medal, Insight, Partnership, Knowledge Mobilization, Impact). Department selects candidate; nomination goes through OVPR (vprawards@ualberta.ca). Internal UAlberta deadline ~Feb 18; SSHRC funder deadline ~April 1. Requires 3 external reference letters \u2014 but only if you pass the UAlberta internal adjudication (results ~mid-March). Co-authors disqualified as referees.",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": 2,
+    "deadline_note": "Annual; UAlberta internal deadline ~Feb 18 (vprawards@ualberta.ca); SSHRC funder deadline ~April 1.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Must have held SSHRC funding. Canadian citizen or PR required. Multiple award categories."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "research-excellence"
+    ],
+    "contacts": {
+      "internal_contact": "OVPR Awards",
+      "email": "vprawards@ualberta.ca"
+    },
+    "history": [
+      {
+        "year": 2025,
+        "nominee": "David Brown",
+        "outcome": "not_nominated",
+        "notes": "Applied; not selected for university nomination to SSHRC."
+      },
+      {
+        "year": 2026,
+        "nominee": "David Brown",
+        "outcome": "declined",
+        "notes": "Decided not to reapply. Conflict: potential letter writer Mar Reguant is now a co-author. Internal deadline Feb 18, 2026."
+      }
+    ],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": true,
+    "lead_time_days": 90,
+    "external_letters_required": 3,
+    "requires_canadian_citizenship": true,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": true,
+    "_next_deadline_str": "February 2027",
+    "_days_until": 257
+  },
+  {
+    "id": "doug-purvis-prize",
+    "name": "Doug Purvis Memorial Prize",
+    "sponsor": "Canadian Economics Association (CEA)",
+    "url": "https://www.economics.ca/cpages/doug-purvis-memorial-prize",
+    "type": "award",
+    "nomination_type": "self",
+    "dana_involvement": "medium",
+    "description": "Annual CEA prize for the best work on Canadian economic policy. Authors self-nominate by submitting their work to the CEA. No external letters required.",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": 3,
+    "deadline_note": "Annual; ~March deadline. Self-nomination \u2014 authors submit directly to CEA.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Work focused on Canadian economic policy. Economics-specific."
+    },
+    "status": "active",
+    "tags": [
+      "cea",
+      "economics-specific",
+      "canadian-policy"
+    ],
+    "contacts": {
+      "internal_contact": null,
+      "email": null
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "google-sheet",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "March 2027",
+    "_days_until": 285
+  },
+  {
+    "id": "killam-research-fund",
+    "name": "Killam Research Fund (Catalyst / Cornerstone / Knowledge Mobilization)",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/funding-opportunities/internal-research-funding.html",
+    "type": "grant",
+    "nomination_type": "self",
+    "dana_involvement": "low",
+    "description": "UAlberta internal grants for Humanities and Social Sciences researchers. Three streams: Catalyst (pilot projects), Cornerstone (established programs), Knowledge Mobilization. Faculty apply directly. Multiple cycles per year. Next Q&A session May 26, 2026 (register at Arts Research).",
+    "amount": "Varies by stream",
+    "recurrence": "multiple",
+    "deadline_month": 7,
+    "deadline_note": "Multiple cycles/year; next deadline July 3, 2026. Info session May 26, 2026.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Humanities and Social Sciences faculty. Self-application."
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "grant",
+      "social-sciences"
+    ],
+    "contacts": {
+      "internal_contact": "Arts Research Office",
+      "email": "resarts@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "July 2026",
+    "_days_until": 42
+  },
+  {
+    "id": "srif",
+    "name": "Strategic Research Initiatives Fund (SRIF)",
+    "sponsor": "University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/strategic-research-initiatives-fund.html",
+    "type": "grant",
+    "nomination_type": "self",
+    "dana_involvement": "low",
+    "description": "UAlberta internal grants. Pool A Matching: leverages external grant applications (no minimum). Pool B Seed: $50K\u2013$100K for new initiatives with external-funding potential. Pool B Bridge: $50K\u2013$100K for near-successful Tri-Agency applications requiring resubmission.",
+    "amount": "$50,000\u2013$100,000 (Pool B)",
+    "recurrence": "multiple",
+    "deadline_month": 6,
+    "deadline_note": "Multiple cycles; next deadline June 5, 2026. Info session May 20, 2026 (9am).",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Self-application. Pool B Bridge requires prior near-successful Tri-Agency application. Registry enrolment mandatory for Bridge from Sept 11, 2026."
+    },
+    "status": "active",
+    "tags": [
+      "ualberta-internal",
+      "grant"
+    ],
+    "contacts": {
+      "internal_contact": "SRIF Program Director",
+      "email": "rhirsch@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "June 2026",
+    "_days_until": 12
+  },
+  {
+    "id": "sshrc-insight-grant",
+    "name": "SSHRC Insight Grant",
+    "sponsor": "SSHRC",
+    "url": "https://www.sshrc-crsh.gc.ca/funding-financement/programs-programmes/insight_grants-subventions_savoir-eng.aspx",
+    "type": "grant",
+    "nomination_type": "self",
+    "dana_involvement": "low",
+    "description": "SSHRC's flagship grant for social sciences and humanities research. Faculty apply directly through UAlberta RAS. Up to $500K over 5 years. Requires naming 2 referees \u2014 SSHRC contacts them directly for assessments. Citizenship not required; employment at a Canadian institution for the grant duration suffices.",
+    "amount": "Up to $500,000 over 5 years",
+    "recurrence": "annual",
+    "deadline_month": 9,
+    "deadline_note": "Annual; Faculty deadline ~Sept 12; RAS deadline ~Sept 18; Funder deadline ~Oct 1.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Social sciences and humanities faculty with SSHRC eligibility. Citizenship not required."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "grant"
+    ],
+    "contacts": {
+      "internal_contact": "Arts Research Office",
+      "email": "resarts@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 2,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "September 2026",
+    "_days_until": 104
+  },
+  {
+    "id": "sshrc-idg",
+    "name": "SSHRC Insight Development Grant (IDG)",
+    "sponsor": "SSHRC",
+    "url": "https://www.sshrc-crsh.gc.ca/funding-financement/programs-programmes/insight_development_grants-subventions_de_developpement_savoir-eng.aspx",
+    "type": "grant",
+    "nomination_type": "self",
+    "dana_involvement": "low",
+    "description": "SSHRC grant for early-stage and methodological research development. Smaller and faster than Insight Grant. Often a good first SSHRC application for early-career faculty. Requires naming 2 referees \u2014 SSHRC contacts them directly for assessments. Citizenship not required.",
+    "amount": "Up to $75,000 over 2 years",
+    "recurrence": "annual",
+    "deadline_month": 1,
+    "deadline_note": "Annual; Faculty deadline ~Jan 16; RAS deadline ~Jan 26; Funder deadline ~Feb 2.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Social sciences and humanities faculty. Especially useful for early-career researchers. Citizenship not required."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "grant",
+      "early-career"
+    ],
+    "contacts": {
+      "internal_contact": "Arts Research Office",
+      "email": "resarts@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 2,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "January 2027",
+    "_days_until": 226
+  },
+  {
+    "id": "sshrc-partnership-engage",
+    "name": "SSHRC Partnership Engage Grant (PEG)",
+    "sponsor": "SSHRC",
+    "url": "https://sshrc-crsh.canada.ca/en/funding/opportunities/partnership-engage-grants/2025/competition.aspx",
+    "type": "grant",
+    "nomination_type": "self",
+    "dana_involvement": "low",
+    "description": "Short-term grants supporting research partnerships with non-academic organizations. Up to $25K for 1 year. Quarterly deadlines. No external reference letters required.",
+    "amount": "Up to $25,000 over 1 year",
+    "recurrence": "quarterly",
+    "deadline_month": null,
+    "deadline_note": "Quarterly; upcoming: Faculty June 1 / Funder June 15, 2026.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Requires a non-academic partner organization."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "grant",
+      "partnership"
+    ],
+    "contacts": {
+      "internal_contact": "Arts Research Office",
+      "email": "resarts@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 14,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": null,
+    "_days_until": null
+  },
+  {
+    "id": "sshrc-connection-grant",
+    "name": "SSHRC Connection Grant",
+    "sponsor": "SSHRC",
+    "url": "https://sshrc-crsh.canada.ca/en/funding/opportunities/connection-grants/2025/competition.aspx",
+    "type": "grant",
+    "nomination_type": "self+letter",
+    "dana_involvement": "medium",
+    "description": "Supports events and knowledge mobilization activities. Requires institutional letter of support from the Arts VDR \u2014 contact vdrarts@ualberta.ca before applying. Up to $50K. No external scholar letters required.",
+    "amount": "Up to $50,000",
+    "recurrence": "quarterly",
+    "deadline_month": null,
+    "deadline_note": "Multiple cycles; upcoming: Funder deadline Aug 4, 2026. Contact Arts VDR early.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Requires coordination with Arts VDR for institutional letter of support."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "grant",
+      "knowledge-mobilization"
+    ],
+    "contacts": {
+      "internal_contact": "Arts Research VDR",
+      "email": "vdrarts@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 30,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": null,
+    "_days_until": null
+  },
+  {
+    "id": "sshrc-destination-horizon",
+    "name": "SSHRC Destination Horizon Grant",
+    "sponsor": "SSHRC / University of Alberta",
+    "url": "https://www.ualberta.ca/en/research/services/funding-awards/funding-opportunities/index.html?search=destination&details=2220",
+    "type": "grant",
+    "nomination_type": "self+letter",
+    "dana_involvement": "medium",
+    "description": "UAlberta-coordinated SSHRC grant. Limited applications per cycle from UofA \u2014 contact SRIF Program Director and Research Partner early. SRIF coordination required.",
+    "amount": null,
+    "recurrence": "annual",
+    "deadline_month": 5,
+    "deadline_note": "Annual; Faculty deadline May 7; RAS deadline May 14; Funder deadline May 22. Contact research partners early \u2014 limited applications per cycle.",
+    "eligibility": {
+      "career_stage": [
+        "any"
+      ],
+      "notes": "Limited UofA applications per cycle. Contact Ayantika Mukherjee (ayantika.mukherjee@ualberta.ca) and Grant Kemp (grant.kemp@ualberta.ca) early."
+    },
+    "status": "active",
+    "tags": [
+      "national",
+      "sshrc",
+      "grant",
+      "ualberta-coordination"
+    ],
+    "contacts": {
+      "internal_contact": "Ayantika Mukherjee",
+      "email": "ayantika.mukherjee@ualberta.ca"
+    },
+    "history": [],
+    "added_date": "2026-05-15",
+    "source": "email-scan",
+    "requires_letter": false,
+    "lead_time_days": 45,
+    "external_letters_required": 0,
+    "requires_canadian_citizenship": false,
+    "min_rank": null,
+    "max_years_since_tt": null,
+    "requires_sshrc_history": false,
+    "_next_deadline_str": "May 2027",
+    "_days_until": 346
+  }
+];
+/* END AWARDS_DATA */
+
+/* BEGIN FACULTY_DATA */
+const FACULTY_DATA = [
+  {
+    "name": "Martin Alfaro",
+    "rank": "associate_professor",
+    "research_areas": "International Trade; Industrial Organization",
+    "phd_year": "2017",
+    "notes": "PhD Aarhus University"
+  },
+  {
+    "name": "Dana Andersen",
+    "rank": "associate_professor",
+    "research_areas": "Environmental Economics; Natural Resource Economics; Public Economics",
+    "phd_year": "",
+    "notes": "Committee chair \u2014 do not self-nominate"
+  },
+  {
+    "name": "Brendon Andrews",
+    "rank": "assistant_professor",
+    "research_areas": "Health Economics; Economic History; Applied Microeconomics",
+    "phd_year": "2022",
+    "notes": "PhD Northwestern University"
+  },
+  {
+    "name": "Vera Brencic",
+    "rank": "full_professor",
+    "research_areas": "Labour Economics; Personnel Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "David Brown",
+    "rank": "full_professor",
+    "research_areas": "Energy Economics; Applied Econometrics; Industrial Organization",
+    "phd_year": "",
+    "notes": "Active nominee history \u2014 see nominees.json"
+  },
+  {
+    "name": "Chetan Dave",
+    "rank": "full_professor",
+    "research_areas": "Macroeconomics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Andrew Eckert",
+    "rank": "full_professor",
+    "research_areas": "Industrial Organization",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Heather Eckert",
+    "rank": "associate_professor",
+    "research_areas": "Environmental Economics; Economics of Education",
+    "phd_year": "",
+    "notes": "Director of Graduate Programming"
+  },
+  {
+    "name": "Sebastian Fossati",
+    "rank": "associate_professor",
+    "research_areas": "Time Series; Econometrics; Empirical Macroeconomics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Valentina Galvani",
+    "rank": "full_professor",
+    "research_areas": "Financial Economics",
+    "phd_year": "",
+    "notes": "Department Chair"
+  },
+  {
+    "name": "Pinar Gunes",
+    "rank": "associate_professor",
+    "research_areas": "Labour Economics; Demographic Economics; Health Economics; Economics of Education; Financial Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Dmytro Hryshko",
+    "rank": "full_professor",
+    "research_areas": "Macroeconomics; Labour Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Haifang Huang",
+    "rank": "full_professor",
+    "research_areas": "Macroeconomics; Urban and Housing Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Tilman Klumpp",
+    "rank": "full_professor",
+    "research_areas": "Microeconomics; Public Economics; Political Economics; Law and Economics; Industrial Organization",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Corinne Langinier",
+    "rank": "full_professor",
+    "research_areas": "Industrial Organization; Applied Microeconomics; Agricultural Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Andrew Leach",
+    "rank": "full_professor",
+    "research_areas": "Energy Economics; Environmental Economics",
+    "phd_year": "",
+    "notes": "co-Director of IPE; nominated for Arts Research award 2023"
+  },
+  {
+    "name": "Xingfei Liu",
+    "rank": "associate_professor",
+    "research_areas": "Labour Economics; Applied Econometrics; Policy Evaluation; Economics of Migration",
+    "phd_year": "2011",
+    "notes": "PhD Concordia University"
+  },
+  {
+    "name": "Joseph Marchand",
+    "rank": "full_professor",
+    "research_areas": "Labour Economics; Labour Markets",
+    "phd_year": "",
+    "notes": "co-Director of IPE"
+  },
+  {
+    "name": "Andrew McGee",
+    "rank": "full_professor",
+    "research_areas": "Labour Economics",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Benjamin Milner",
+    "rank": "assistant_professor",
+    "research_areas": "Labour Economics; Economic History; Education Economics; Inequality",
+    "phd_year": "2020",
+    "notes": "PhD University of British Columbia"
+  },
+  {
+    "name": "Jeffrey Penney",
+    "rank": "associate_professor",
+    "research_areas": "Applied Microeconomics; Labour Economics; Economics of Education",
+    "phd_year": "2015",
+    "notes": ""
+  },
+  {
+    "name": "Ashantha Ranasinghe",
+    "rank": "associate_professor",
+    "research_areas": "Macroeconomics; Economic Growth and Development",
+    "phd_year": "2013",
+    "notes": ""
+  },
+  {
+    "name": "Kenichi Shimizu",
+    "rank": "assistant_professor",
+    "research_areas": "Econometrics; Marketing; Industrial Organization; Time Series; High-Dimensional Econometrics",
+    "phd_year": "2021",
+    "notes": "PhD Brown University"
+  },
+  {
+    "name": "Malik Shukayev",
+    "rank": "associate_professor",
+    "research_areas": "Macroeconomics; Monetary Economics",
+    "phd_year": "",
+    "notes": "Director of Undergraduate Programming; PhD ~2005 U Minnesota"
+  },
+  {
+    "name": "Xuejuan Su",
+    "rank": "full_professor",
+    "research_areas": "Public Economics; Economics of Education; Regulatory Economics; Energy",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Beyza Ural-Marchand",
+    "rank": "full_professor",
+    "research_areas": "Development Economics; International Trade",
+    "phd_year": "",
+    "notes": ""
+  },
+  {
+    "name": "Laurel Wheeler",
+    "rank": "assistant_professor",
+    "research_areas": "Development Economics; Labour Economics; Public Economics",
+    "phd_year": "2019",
+    "notes": "PhD Duke University"
+  },
+  {
+    "name": "Jiatong Zhong",
+    "rank": "assistant_professor",
+    "research_areas": "International Trade; Applied Microeconomics",
+    "phd_year": "2019",
+    "notes": "PhD Purdue University"
+  },
+  {
+    "name": "Li Zhou",
+    "rank": "associate_professor",
+    "research_areas": "Behavioral and Experimental Economics; Urban and Housing Economics; International Trade and Finance",
+    "phd_year": "",
+    "notes": ""
+  }
+];
+/* END FACULTY_DATA */
+
+// ── Deadline helpers ────────────────────────────────────────────────────────
+function nextDeadlineForMonth(month) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  let d = new Date(today.getFullYear(), month - 1, 1);
+  const cutoff = new Date(today);
+  cutoff.setDate(cutoff.getDate() - 14);
+  if (d < cutoff) d = new Date(today.getFullYear() + 1, month - 1, 1);
+  return d;
+}
+
+function daysUntil(d) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.round((d - today) / 86400000);
+}
+
+function deadlineLabel(award) {
+  if (!award.deadline_month) return null;
+  const d    = nextDeadlineForMonth(award.deadline_month);
+  const days = daysUntil(d);
+  const mon  = d.toLocaleString("en-CA", { month: "long", year: "numeric" });
+  return { days, label: `~${mon}`, cls: days <= 14 ? "urgent" : days <= 30 ? "soon" : "normal" };
+}
+
+// ── Profile & eligibility ────────────────────────────────────────────────────
+function getProfile() {
+  return {
+    rank:       document.querySelector(".rank-btn.active")?.dataset.rank ?? "any",
+    isCanadian: document.getElementById("p-canadian").checked,
+    isEarly:    document.getElementById("p-early").checked,
+    hasSshrc:   document.getElementById("p-sshrc").checked,
+    noLetters:  document.getElementById("p-no-letters").checked,
+  };
+}
+
+function profileIsSet(p) {
+  return p.rank !== "any" || p.isCanadian || p.isEarly || p.hasSshrc || p.noLetters;
+}
+
+function isEligible(award, p) {
+  if (!profileIsSet(p)) return true;
+  if (p.noLetters && award.external_letters_required > 0) return false;
+  if (award.requires_canadian_citizenship && !p.isCanadian) return false;
+  if (award.requires_sshrc_history       && !p.hasSshrc)   return false;
+  if (award.max_years_since_tt != null   && !p.isEarly)     return false;
+  if (p.rank !== "any") {
+    const lvl = { assistant_professor: 1, associate_professor: 2, full_professor: 3 };
+    const u = lvl[p.rank] ?? 0;
+    if (award.min_rank === "associate" && u < 2) return false;
+    if (award.min_rank === "full"      && u < 3) return false;
+    const cs = award.eligibility?.career_stage ?? ["any"];
+    if (!cs.includes("any")) {
+      const key = { assistant_professor: "assistant", associate_professor: "associate", full_professor: "full" };
+      if (!cs.includes(key[p.rank])) return false;
+    }
+  }
+  return true;
+}
+
+// ── Render ──────────────────────────────────────────────────────────────────
+function renderCard(award) {
+  const dl    = deadlineLabel(award);
+  const isEarlyCareer = (award.eligibility?.years_since_first_tt ?? null) !== null
+                     || (award.eligibility?.career_stage ?? []).includes("assistant");
+
+  const typeBadge = award.type === "award"
+    ? '<span class="badge badge-award">Award</span>'
+    : award.type === "fellowship"
+    ? '<span class="badge badge-fellow">Fellowship</span>'
+    : '<span class="badge badge-grant">Grant</span>';
+
+  const invBadge = award.dana_involvement === "high"
+    ? '<span class="badge badge-high" title="Department coordinates nomination">Dept nomination</span>'
+    : award.dana_involvement === "medium"
+    ? '<span class="badge badge-med" title="Some coordination may be needed">Coord. helpful</span>'
+    : "";
+
+  const ecBadge = isEarlyCareer
+    ? '<span class="badge badge-ec">Early career</span>' : "";
+
+  const nl = award.external_letters_required;
+  const letBadge = nl > 0
+    ? `<span class="badge badge-letters" title="External reference letters required from scholars outside UAlberta">✉ ${nl} ref letter${nl !== 1 ? "s" : ""}</span>`
+    : nl === null
+    ? `<span class="badge badge-letters" title="External letter requirement not confirmed — verify before nominating">✉ letters?</span>`
+    : "";
+
+  const dlHtml = dl
+    ? `<div class="deadline ${dl.cls}">⏰ Next deadline: ${dl.label} (${dl.days > 0 ? dl.days + " days" : "past"})</div>`
+    : `<div class="deadline tbc">⏰ ${award.deadline_note}</div>`;
+
+  const amtHtml = award.amount
+    ? `<div class="amount">💰 ${award.amount}</div>` : "";
+
+  const eligNote = award.eligibility?.notes ?? "";
+  const eligHtml = eligNote
+    ? `<div class="elig">Eligibility: ${eligNote}</div>` : "";
+
+  const contactSubject = encodeURIComponent(`${award.name} — interest`);
+  const infoBtn = award.url
+    ? `<a class="btn btn-primary" href="${award.url}" target="_blank" rel="noopener">More info ↗</a>`
+    : "";
+  const contactBtn = award.dana_involvement === "high"
+    ? `<a class="btn btn-secondary" href="mailto:dca@ualberta.ca?subject=${contactSubject}">Contact Dana</a>`
+    : "";
+
+  return `
+    <div class="card type-${award.type}" data-type="${award.type}"
+         data-involvement="${award.dana_involvement}"
+         data-days="${dl ? dl.days : 9999}">
+      <div class="card-top">${typeBadge}${invBadge}${ecBadge}${letBadge}</div>
+      <h3>${award.name}</h3>
+      <div class="sponsor">${award.sponsor}</div>
+      ${dlHtml}
+      ${amtHtml}
+      <div class="desc">${award.description}</div>
+      ${eligHtml}
+      <div class="inelig-note">⚠ You may not meet all eligibility requirements</div>
+      <div class="card-actions">
+        ${infoBtn}
+        ${contactBtn}
+      </div>
+    </div>`;
+}
+
+function renderGrid() {
+  const typeFilter   = document.querySelector(".filter-btn.active")?.dataset.type ?? "all";
+  const highOnly     = document.getElementById("high-only").checked;
+  const upcomingOnly = document.getElementById("upcoming-only").checked;
+  const p            = getProfile();
+
+  const cards = AWARDS_DATA.filter(a => {
+    if (a.status !== "active") return false;
+    if (typeFilter === "award" && a.type === "grant")  return false;
+    if (typeFilter === "grant" && a.type !== "grant")  return false;
+    if (highOnly   && a.dana_involvement !== "high")   return false;
+    if (upcomingOnly) {
+      const dl = deadlineLabel(a);
+      if (!dl || dl.days < 0 || dl.days > 90) return false;
+    }
+    return true;
+  });
+
+  // Sort: upcoming deadlines first (past/TBC pushed to end), then by name
+  cards.sort((a, b) => {
+    const raw = d => { const dl = deadlineLabel(d); return dl ? dl.days : 9999; };
+    const da = raw(a) < 0 ? 10000 : raw(a);
+    const db = raw(b) < 0 ? 10000 : raw(b);
+    return da !== db ? da - db : a.name.localeCompare(b.name);
+  });
+
+  const grid = document.getElementById("awards-grid");
+  if (cards.length === 0) {
+    grid.innerHTML = '<div class="empty">No awards match the current filters.</div>';
+  } else {
+    grid.innerHTML = cards.map(a => {
+      const html = renderCard(a);
+      if (profileIsSet(p) && !isEligible(a, p)) {
+        return html.replace('<div class="card ', '<div class="card ineligible ');
+      }
+      return html;
+    }).join("");
+  }
+}
+
+// ── Filters ─────────────────────────────────────────────────────────────────
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderGrid();
+  });
+});
+document.getElementById("high-only").addEventListener("change", renderGrid);
+document.getElementById("upcoming-only").addEventListener("change", renderGrid);
+
+// ── Profile panel ────────────────────────────────────────────────────────────
+document.querySelectorAll(".rank-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".rank-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderGrid();
+  });
+});
+["p-canadian", "p-early", "p-sshrc", "p-no-letters"].forEach(id => {
+  document.getElementById(id).addEventListener("change", renderGrid);
+});
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+const today = new Date().toISOString().slice(0,10);
+document.getElementById("last-updated").textContent         = today;
+document.getElementById("last-updated-footer").textContent  = today;
+renderGrid();
+</script>
+</body>
+</html>
